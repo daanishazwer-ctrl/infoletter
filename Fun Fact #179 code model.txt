@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fun Fact Guessing Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fdfdfd;
+      color: #333;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #0077ff;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #005fcc;
+    }
+    .hidden { display: none; }
+    .result { font-weight: bold; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>🎲 Fun Fact Guessing Game</h1>
+  <div id="game"></div>
+
+  <script>
+    const gameData = [
+      {
+        question: "This fun fact relates to which area?",
+        options: ["Space", "Food & Health", "History", "Animals"],
+        answer: 1
+      },
+      {
+        question: "Which ingredient is involved?",
+        options: ["Onion", "Garlic", "Ginger", "Turmeric"],
+        answer: 1
+      },
+      {
+        question: "What property makes it special?",
+        options: ["Sweetness", "Antimicrobial action", "Spiciness", "Color"],
+        answer: 1
+      },
+      {
+        question: "Which fun fact is true?",
+        options: [
+          "Garlic can glow in the dark",
+          "Garlic produces Allicin with antimicrobial properties",
+          "Garlic is older than rice",
+          "Garlic is used to repel mosquitoes only"
+        ],
+        answer: 1,
+        final: true
+      }
+    ];
+
+    let current = 0;
+    const gameDiv = document.getElementById("game");
+
+    function loadQuestion() {
+      const q = gameData[current];
+      gameDiv.innerHTML = `
+        <div class="card">
+          <h2>${q.question}</h2>
+          ${q.options.map((opt,i) => `<button onclick="checkAnswer(${i})">${opt}</button>`).join("")}
+          <div id="result" class="result"></div>
+        </div>
+      `;
+    }
+
+    function checkAnswer(i) {
+      const q = gameData[current];
+      const resultDiv = document.getElementById("result");
+      if (i === q.answer) {
+        resultDiv.textContent = "✅ Correct!";
+        setTimeout(() => {
+          current++;
+          if (current < gameData.length) {
+            loadQuestion();
+          } else {
+            gameDiv.innerHTML = `
+              <div class="card">
+                <h2>🎉 You solved it!</h2>
+                <p>The fun fact is: <strong>Not just vampires, but also bacteria. Garlic can produce the compound Allicin, which has antimicrobial and antioxidant properties, hence the reason for its use to treat bacterial infections.</strong></p>
+              </div>
+            `;
+          }
+        }, 800);
+      } else {
+        resultDiv.textContent = "❌ Try again!";
+      }
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
